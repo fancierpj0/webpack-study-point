@@ -1,0 +1,13 @@
+body{
+    color:red;
+}
+
+.logo{
+    width:540px;
+    height:228px;
+    background-image: url(./images/logo.gif);
+}
+
+::placeholder{
+  color:red;
+}
