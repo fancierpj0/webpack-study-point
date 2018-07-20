@@ -1,6 +1,6 @@
 const path = require('path');
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
-const HappyPack = require('happypack')
+const HappyPack = require('happypack');
 
 module.exports = {
   entry: './scr/testdll.js'
