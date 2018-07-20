@@ -16,14 +16,23 @@ webpack 不安装webpack-cli，只能被require作为一个包来使用
 
 webpack-cli 让webpack能在命令行中使用
 
-webpack-dev-server 让webpack自动编译和刷新浏览器
+webpack-dev-server 让webpack自动编译和刷新浏览器，由express编写
 
-## tree shaking
+## 4.x自带功能
+### mode
+```
+(env,argv)=>{
+  return argv.mode === 'development'?
+    devConfig
+    :proConfig
+}
+```
+### tree shaking
 4.x自带js tree shaking，包裹需要babel对es6的转译关闭
 ```
 presets:[['env',{modules:false}],...]
 ```
-## scope hoisting
+### scope hoisting
 4.x自带
 
 功能如下
@@ -39,3 +48,8 @@ console.log(name);
 
 console.log('hello');
 ```
+
+## FAQ
+1. 动态链接库 适合 在生产环境中使用不？
+
+2. 如何让热加载支持react/vue

@@ -19,7 +19,6 @@ const bootstrapPath = path.resolve(__dirname, 'node_modules/bootstrap/dist/css/b
 //module.exports = (env,argv)=>{}
 //env环境变量 argv命令行参数对象
 //argv.mode能拿到 "start": "webpack-dev-server --mode development" 中设置的mode
-//另外也可以在各个模块中的process.env.NODE_ENV 拿到这个值
 module.exports = (env, argv) => ({
   //最佳化，最优化
   optimization: {
@@ -41,7 +40,7 @@ module.exports = (env, argv) => ({
   }
 
   , resolve: {
-    //指定extension之后可以不用在require或是import的时候加文件扩展名，会一次尝试添加扩展名进行匹配
+    //指定extension之后可以不用在require或是import的时候加文件扩展名，会依次尝试添加扩展名进行匹配
     extensions: ['.js', '.jsx', '.json', '.css', '.less']
 
     //import 'bootstrap'(这里的bootstrap并不是写死的) 时其实是import bootstrapPath这个变量的值所表示的路径
@@ -56,7 +55,10 @@ module.exports = (env, argv) => ({
     ]
 
     //npm包查找是这样查找的
-    //先在node_modules里找 文件夹 然后找package.json里main字段设置的 最后再找index.js，找不到就报错咯
+    //指定import 'xx'/require('xx'),不带'./'时,模块的查找路径
+    //先在node_modules里找文件夹
+    // ，然后找package.json里main字段设置的
+    // ，最后再找index.js，找不到就报错咯
 
     //配置package.json中的入口指向
     //现找style字段作为入口再找main字段作为入口
@@ -127,7 +129,7 @@ module.exports = (env, argv) => ({
           loader: 'babel-loader'
           , options: {
             presets: ['env', 'stage-0', 'react']
-            ,plugins:['transform-decorator-legacy']
+            ,plugins:['transform-decorators-legacy']
           }
         }]
         , include: path.resolve(__dirname, 'src')
@@ -205,6 +207,8 @@ module.exports = (env, argv) => ({
       , minify: {
         //删除属性的双引号
         removeAttributeQuotes: true
+        //折叠空白区域 也就是压缩代码
+        ,collapseWhitespace:true
       }
       //防止缓存
       , hash: true
@@ -251,11 +255,12 @@ module.exports = (env, argv) => ({
     //npm i expose-loader -D
     //使用见index.js
 
-    //如果我们想引用一个库，但是又不想让webpack打包，并且又不影响我们在程序中以CMD、AMD或则window/global全局等方式进行使用，那就可以通过配置externals来实现
-    //比如：通过加载CDN来引入第三方库
-    // <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+
   ]
 
+  //如果我们想引用一个库，但是又不想让webpack打包，并且又不影响我们在程序中以CMD、AMD或则window/global全局等方式进行使用，那就可以通过配置externals来实现
+  //比如：通过加载CDN来引入第三方库
+  // <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
   , externals: {
     //这个大写的jQuery是引入CDN注入的全局对象的名字(window.jQuery)
     //jquery是我们在模块中import $ from 'jquery'的jquery
